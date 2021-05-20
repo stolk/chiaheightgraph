@@ -73,9 +73,9 @@ static void init_octets( time_t now )
 static void shift_octets( void )
 {
 	fprintf( stderr, "Shifting octets...\n" );
-	for ( int i=0; i<MAXHIST-1; ++i )
-		octets[i] = octets[i+1];
 	const int last = MAXHIST-1;
+	for ( int i=0; i<last; ++i )
+		octets[i] = octets[i+1];
 	memset( octets+last, 0, sizeof(octethr_t) );
 	octets[ last ].timelo = octets[ last-1 ].timelo + 450;
 	octets[ last ].timehi = octets[ last-1 ].timehi + 450;
@@ -307,6 +307,12 @@ static void draw_column( int nr, uint32_t* img, int h, time_t now )
 		}
 		count++;
 	}
+	if ( q>0 )
+	{
+		int j = octets[q-1].sz-1;
+		if ( j > 0 )
+			h0 = octets[q-1].height[ j ];
+	}
 	const int deltah = h1-h0;
 	const int nom = (int) ( roundf(expected_per_octet * h / 50 ) ); 
 	const int lvl = (int) ( roundf(deltah * h / 50) );
@@ -317,37 +323,43 @@ static void draw_column( int nr, uint32_t* img, int h, time_t now )
 		uint32_t grn = 0x36;
 		uint32_t blu = 0x36;
 		const int yinv = (h-1-y);
-		if ( y == lvl && nr == 0 )
-		{
-			red = grn = blu = 0xcc;
-		}
-		else if ( y == nom )
+
+		if ( y == nom || y == nom-1 )
 		{
 			red = 0xa0;
 			grn = 0xa0;
 		}
+
+		if ( y == lvl && nr == 0 )
+		{
+			red = grn = blu = 0xcc;
+		}
 		else if ( nr == 0 )
 		{
-		}
-		else if  ((y==lvl) && 0 )
-		{
-			if ( count ) grn = 0xc0;
 		}
 		else if ( y < nom )
 		{
 			if ( (y > lvl) && count )
 			{
 				red = 0xc0;
+				grn = blu = 0x36;
 			}
 		}
-		else if ( y > nom )
+		else if ( y >= nom )
 		{
 			if ( y < lvl && count )
 			{
 				blu = 0xc0;
 				grn = 0x80;
+				red = 0x36;
 			}
 		}
+		else if ( y == nom || y == nom-1 )
+		{
+			red = 0xa0;
+			grn = 0xa0;
+		}
+
 		if ( band )
 		{
 			red = red * 200 / 255;
