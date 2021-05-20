@@ -48,7 +48,11 @@ This tool will look for those lines in the logs.
 
 The graph spans from the right of the terminal (NOW) to the left of the terminal (PAST) and every shaded band represents one hour, and every vertical line, one quarter of an hour.
 
-Depending on the vertical resolution of the terminal, every plot pixel represents a number of seconds, 15 minutes from top to bottom.
+Successive red bars, means your block-height has been lacking updates, and indicate a synchronization issue.
+
+The blue bars are just your node catching up.
+
+In a perfectly tuned system, the bars are short, although variance means they will always be some. But a graph going **and staying** red is a sign of issues.
 
 **NOTE:** You can see more days of the week by simply resizing your terminal to be wider.
 
@@ -60,7 +64,7 @@ Blue: the full node saw more new blocks than expected, during this time span.
 
 Red: the full node saw fewer new blocks than expected, during this time span.
 
-Yellow: the rate of new blcoks in nominal.
+Yellow: the rate of new blocks in nominal.
 
 If you see a large red peak down followed by a large blue peak up, it means that the new blocks came in delayed.
 
