@@ -1,0 +1,15 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+
+# Executable
+chiaheightgraph
+
+# Debug files
+*.dSYM/
+
+# Debugger
+.gdb_history
+
